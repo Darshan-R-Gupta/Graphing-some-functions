@@ -6,7 +6,7 @@ std::random_device rd;
 std::mt19937 rng(rd());
 std::uniform_real_distribution <float> xDist(50, 750);
 std::uniform_real_distribution <float> yDist(50, 550);
-
+//nice
 void Particle::attract(Location n_loc)
 {
 
