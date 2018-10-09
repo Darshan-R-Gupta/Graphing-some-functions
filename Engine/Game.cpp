@@ -67,7 +67,18 @@ void Game::UpdateModel()
 		p.p[i].loc.x += p.p[i].vx;
 		p.p[i].vy = (float)50 * cos(0.05*p.p[i].loc.x)*0.05*p.p[i].vx;
 		p.p[i].loc.y += p.p[i].vy;
-		
+		}
+}
+void Game::trail(Particles p) {
+	float dv = 0;
+	float k = 301;
+	for (int j = 0; j < p.no_of_particles; j++) {
+		for (float i = 50; i < 750; i+=abs(p.p[j].vx))
+		{
+			dv = 50 * cos(0.05*i)*0.05*abs(p.p[j].vx);
+			k +=dv;
+			p.gfxx.PutPixel((int)i, (int)k, p.c);
+		}
 	}
 }
 void Game::Adjust_particle_x(Particle &p)
@@ -78,12 +89,11 @@ void Game::Adjust_particle_x(Particle &p)
 	if ((p.loc.x + p.side) >= 750) {
 
 		p.loc.x = (750 - p.side);
-		p.vx = -x(rng1);
-	//	p.vy = -y(rng1) * 10 * cos((float)p.loc.x*y1(rng1))*y1(rng1)*p.vx;
+		p.vx = -p.vx;
 	}
 	else if (p.loc.x <= 50) {
 		p.loc.x = 50;
-		p.vx = x(rng1);
+		p.vx = -p.vx;
 		//p.vy = y(rng1) * 10 * cos((float)p.loc.x*y1(rng1))*y1(rng1)*p.vx;
 	}
 }
@@ -120,4 +130,5 @@ void Game::ComposeFrame()
 {
 	Draw_Border();
 	p.draw(p.c);
+	trail(p);
 }

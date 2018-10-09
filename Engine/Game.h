@@ -46,5 +46,6 @@ public:
 	/********************************/
 	/*  User Variables              */
 	Particles p;
+	void trail(Particles p);
 	/********************************/
 };

@@ -27,7 +27,7 @@ public:
 	Graphics &gfxx;
 	Particle p[1];
 	void draw(Color c);
-	void trail();
+	
 	bool attract_to(Location loc);
 };
 

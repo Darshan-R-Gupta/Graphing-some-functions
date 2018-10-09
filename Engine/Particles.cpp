@@ -32,12 +32,10 @@ void Particle::attract(Location n_loc)
 			vy = 0;
 		};
 }
-void Particles::trail() {
 
-}
 Particle::Particle()
 {
-	loc.x = 100;
+	loc.x = 50;
 	loc.y = 300;
 	vx = 3;
 	vy = 50*cos(0.05*loc.x)*0.05*vx;
