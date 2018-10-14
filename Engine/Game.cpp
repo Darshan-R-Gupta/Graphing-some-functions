@@ -35,9 +35,8 @@ Game::Game(MainWindow& wnd)
 {
 	p1.vx = 1;
 	p1.loc.x = 300;
-	p1.loc.y = (p1.loc.x - 300)*(p1.loc.x -300) +300;
+	p1.loc.y = (p1.loc.x - 300)*(p1.loc.x - 300) + 300;
 }
-
 void Game::Go()
 {
 	gfx.BeginFrame();	
@@ -59,7 +58,19 @@ void Game::UpdateModel()
 		p1.side--;
 	}
 	Adjust_particle(p);
-//	Adjust_particle(p1);
+	Adjust_parabola(p1);
+	
+	p.loc.x += p.vx;
+	p1.loc.x += p1.vx;
+	
+	p.vy = (float)   50 * cos(0.05*p.loc.x)*0.05*p.vx; //differentiated sin function
+	p1.vy = (float)  -(2 * (p1.loc.x - 300) * p1.vx) / 20;//differentiated parabola1 
+	
+	p.loc.y += p.vy;
+	p1.loc.y += p1.vy;
+}
+void Game::Adjust_parabola(Particle &p1) {
+
 	if ((p1.loc.y + p1.side) >= 550) {
 		p1.loc.y = 550 - p1.side;
 		p1.vy = -p1.vy;
@@ -70,21 +81,10 @@ void Game::UpdateModel()
 		p1.vy = -p1.vy;
 		p1.vx = -p1.vx;
 	}
-
-	p.loc.x += p.vx;
-	p1.loc.x += p1.vx;
-	
-	p.vy =  (float) 50 * cos(0.05*p.loc.x)*0.05*p.vx;
-	p1.vy = (float) -(2 * (p1.loc.x -300) * p1.vx)/30;
-	
-	p.loc.y += p.vy;
-	p1.loc.y += p1.vy;
+	else {};
 }
 void Game::Adjust_particle_x(Particle &p)
 {
-	std::uniform_real_distribution <float> x(1,3);
-	std::uniform_int_distribution <int> y(2, 10);
-	std::uniform_real_distribution <float> y1(0.03, 0.05);
 	if ((p.loc.x + p.side) >= 750) {
 
 		p.loc.x = (750 - p.side);
@@ -97,8 +97,6 @@ void Game::Adjust_particle_x(Particle &p)
 }
 void Game::Adjust_particle_y(Particle & p)
 {
-	std::uniform_int_distribution <int> y(2, 10);
-	std::uniform_real_distribution <float> y1(0.03, 0.05);
 	if ((p.loc.y + p.side) >= 550) {
 		p.loc.y = 550 - p.side;
 		p.vy = -p.vy;

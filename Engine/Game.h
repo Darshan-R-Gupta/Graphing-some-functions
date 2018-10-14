@@ -39,6 +39,7 @@ public:
 	void Adjust_particle_y(Particle &p);
 	void Draw_Border();
 	void Adjust_particle(Particle &p);
+	void Adjust_parabola(Particle &p1);
 	/********************************/
 	MainWindow& wnd;
 	Graphics gfx;
