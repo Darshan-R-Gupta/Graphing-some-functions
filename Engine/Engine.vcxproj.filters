@@ -48,7 +48,7 @@
     <ClInclude Include="Resource.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Particles.h">
+    <ClInclude Include="Particle.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -74,7 +74,7 @@
     <ClCompile Include="Mouse.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Particles.cpp">
+    <ClCompile Include="Particle.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

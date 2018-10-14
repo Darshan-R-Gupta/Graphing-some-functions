@@ -23,8 +23,7 @@
 #include "Keyboard.h"
 #include "Mouse.h"
 #include "Graphics.h"
-#include "Particles.h"
-
+#include "Particle.h"
 class Game
 {
 public:
@@ -39,13 +38,13 @@ public:
 	void Adjust_particle_x(Particle &p);
 	void Adjust_particle_y(Particle &p);
 	void Draw_Border();
-	void attract_particles_to(Location loc);
+	void Adjust_particle(Particle &p);
 	/********************************/
 	MainWindow& wnd;
 	Graphics gfx;
 	/********************************/
 	/*  User Variables              */
-	Particles p;
-	void trail(Particles p);
+	Particle p; //the sin curve
+	Particle p1; //the parabola y = x^2
 	/********************************/
 };

@@ -8,26 +8,24 @@ public:
 		x += (int)dx;
 		y += (int)dy;
 	}
+	Location() {
+		x = 0;
+		y = 0;
+	}
+	Location(Location &loc) {
+		x = loc.x;
+		y = loc.y;
+	}
 };
 class Particle
 {
 public:
-	void attract(Location n_loc);
 	float side=10;
 	Location loc;
-	float vx=1, vy=1;
-	Particle();
-};
-class Particles {
-
-public:	
-	int no_of_particles=1;
-	Particles(Graphics &gfx, Color c1);
-	Color c;
 	Graphics &gfxx;
-	Particle p[1];
-	void draw(Color c);
-	
-	bool attract_to(Location loc);
+	Color c;
+	float vx=1, vy=1;
+	Particle(Graphics &gfx, Color c1);
+	void draw();
 };
 

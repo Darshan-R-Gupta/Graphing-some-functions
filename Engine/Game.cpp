@@ -30,9 +30,12 @@ Game::Game(MainWindow& wnd)
 	:
 	wnd(wnd),
 	gfx(wnd),
-	p(gfx, {0,191,255})
+	p(gfx, { 0,191,255 }),
+	p1(gfx, Colors::Green)
 {
-	
+	p1.vx = 1;
+	p1.loc.x = 300;
+	p1.loc.y = (p1.loc.x - 300)*(p1.loc.x -300) +300;
 }
 
 void Game::Go()
@@ -45,41 +48,37 @@ void Game::Go()
 
 void Game::UpdateModel()
 {
-	
+
 	if (wnd.kbd.KeyIsPressed(VK_RETURN))
 	{
-		for (int i = 0; i < p.no_of_particles; i++) {
-			p.p[i].side++;
-			}
+		p.side++;
+		p1.side++;
 	}
 	if (wnd.kbd.KeyIsPressed(VK_BACK)) {
+		p.side--;
+		p1.side--;
+	}
+	Adjust_particle(p);
+//	Adjust_particle(p1);
+	if ((p1.loc.y + p1.side) >= 550) {
+		p1.loc.y = 550 - p1.side;
+		p1.vy = -p1.vy;
+		p1.vx = -p1.vx;
+	}
+	else if (p1.loc.y <= 50) {
+		p1.loc.y = 50;
+		p1.vy = -p1.vy;
+		p1.vx = -p1.vx;
+	}
 
-		for (int i = 0; i < p.no_of_particles; i++) {
-			p.p[i].side--;
-		}
-	}
-	if (wnd.mouse.LeftIsPressed()) {
-		p.attract_to({ (float)wnd.mouse.GetPosX(), (float)wnd.mouse.GetPosY() });
-	}
-	for (int i = 0; i < p.no_of_particles; i++) {
-		Adjust_particle_x(p.p[i]);
-		Adjust_particle_y(p.p[i]);
-		p.p[i].loc.x += p.p[i].vx;
-		p.p[i].vy = (float)50 * cos(0.05*p.p[i].loc.x)*0.05*p.p[i].vx;
-		p.p[i].loc.y += p.p[i].vy;
-		}
-}
-void Game::trail(Particles p) {
-	float dv = 0;
-	float k = 301;
-	for (int j = 0; j < p.no_of_particles; j++) {
-		for (float i = 50; i < 750; i+=abs(p.p[j].vx))
-		{
-			dv = 50 * cos(0.05*i)*0.05*abs(p.p[j].vx);
-			k +=dv;
-			p.gfxx.PutPixel((int)i, (int)k, p.c);
-		}
-	}
+	p.loc.x += p.vx;
+	p1.loc.x += p1.vx;
+	
+	p.vy =  (float) 50 * cos(0.05*p.loc.x)*0.05*p.vx;
+	p1.vy = (float) -(2 * (p1.loc.x -300) * p1.vx)/30;
+	
+	p.loc.y += p.vy;
+	p1.loc.y += p1.vy;
 }
 void Game::Adjust_particle_x(Particle &p)
 {
@@ -94,7 +93,6 @@ void Game::Adjust_particle_x(Particle &p)
 	else if (p.loc.x <= 50) {
 		p.loc.x = 50;
 		p.vx = -p.vx;
-		//p.vy = y(rng1) * 10 * cos((float)p.loc.x*y1(rng1))*y1(rng1)*p.vx;
 	}
 }
 void Game::Adjust_particle_y(Particle & p)
@@ -103,11 +101,11 @@ void Game::Adjust_particle_y(Particle & p)
 	std::uniform_real_distribution <float> y1(0.03, 0.05);
 	if ((p.loc.y + p.side) >= 550) {
 		p.loc.y = 550 - p.side;
-		p.vy = -y(rng1)*10 * cos((float)p.loc.x*y1(rng1))*y1(rng1)*p.vx;
+		p.vy = -p.vy;
 	}
 	else if (p.loc.y <= 50) {
 		p.loc.y = 50;
-		p.vy = y(rng1)*10 * cos((float)p.loc.x*y1(rng1))*y1(rng1)*p.vx;
+		p.vy = -p.vy;
 	}
 }
 void Game::Draw_Border()
@@ -126,9 +124,15 @@ void Game::Draw_Border()
 	}
 
 }
+void Game::Adjust_particle(Particle & p)
+{
+	Adjust_particle_x(p);
+	Adjust_particle_y(p);
+}
+
 void Game::ComposeFrame()
 {
 	Draw_Border();
-	p.draw(p.c);
-	trail(p);
+	p.draw();
+	p1.draw();
 }
