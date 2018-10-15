@@ -47,5 +47,6 @@ public:
 	/*  User Variables              */
 	Particle p; //the sin curve
 	Particle p1; //the parabola y = x^2
+	Particle p2; //the tan curve
 	/********************************/
 };

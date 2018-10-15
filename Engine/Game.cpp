@@ -31,11 +31,16 @@ Game::Game(MainWindow& wnd)
 	wnd(wnd),
 	gfx(wnd),
 	p(gfx, { 0,191,255 }),
-	p1(gfx, Colors::Green)
+	p1(gfx, Colors::Green),
+	p2(gfx, Colors::Yellow)
 {
 	p1.vx = 1;
 	p1.loc.x = 300;
 	p1.loc.y = (p1.loc.x - 300)*(p1.loc.x - 300) + 300;
+
+	p2.vx = 2;
+	p2.loc.x = 50;
+	p2.loc.y =  50*(2*cos(0.01*p2.loc.x) + (sin(0.04*p2.loc.x)*sin(0.04*p2.loc.x)) )+275;
 }
 void Game::Go()
 {
@@ -52,22 +57,28 @@ void Game::UpdateModel()
 	{
 		p.side++;
 		p1.side++;
+		p2.side++;
 	}
 	if (wnd.kbd.KeyIsPressed(VK_BACK)) {
 		p.side--;
 		p1.side--;
+		p2.side--;
 	}
 	Adjust_particle(p);
 	Adjust_parabola(p1);
-	
+	Adjust_particle(p2);
+
 	p.loc.x += p.vx;
 	p1.loc.x += p1.vx;
+	p2.loc.x += p2.vx;
 	
-	p.vy = (float)   50 * cos(0.05*p.loc.x)*0.05*p.vx; //differentiated sin function
-	p1.vy = (float)  -(2 * (p1.loc.x - 300) * p1.vx) / 20;//differentiated parabola1 
+	p.vy = (float)50 * cos(0.05*p.loc.x)*0.05*p.vx; //differentiated sin function
+	p1.vy = (float)-(2 * (p1.loc.x - 300) * p1.vx) / 10;//differentiated parabola 
+	p2.vy = (float)50 * ((sin(0.08*p2.loc.x)*0.04) - (2 * sin(0.01*p2.loc.x)*0.01))*p2.vx;
 	
 	p.loc.y += p.vy;
 	p1.loc.y += p1.vy;
+	p2.loc.y += p2.vy;
 }
 void Game::Adjust_parabola(Particle &p1) {
 
@@ -133,4 +144,5 @@ void Game::ComposeFrame()
 	Draw_Border();
 	p.draw();
 	p1.draw();
+	p2.draw();
 }
